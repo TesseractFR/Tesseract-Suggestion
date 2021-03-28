@@ -1,0 +1,14 @@
+{
+  "name": "tesseract-suggestion",
+  "version": "1.0.0",
+  "description": "Suggestion manager linked with trello",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "GabRayz",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
+}
