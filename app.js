@@ -1,4 +1,5 @@
 const {Bot} = require('./src/bot.js');
+const {Command} = require('./src/Command.js');
 const fs = require('fs');
 
 function load_config(path)
@@ -14,4 +15,5 @@ function load_config(path)
 
 load_config('./config.json').then(config => {
     new Bot(config);
+    Command.registerCommands();
 });
