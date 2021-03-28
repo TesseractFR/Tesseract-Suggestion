@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-const {Command} = require('./Command');
 
 class Bot
 {
@@ -51,3 +50,5 @@ class Bot
 }
 
 module.exports.Bot = Bot;
+
+const {Command} = require('./Command');

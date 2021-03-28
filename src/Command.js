@@ -26,4 +26,4 @@ class Command
 
 module.exports.Command = Command;
 
-let HelpCommand = require('./help');
+let {HelpCommand} = require('./help');
