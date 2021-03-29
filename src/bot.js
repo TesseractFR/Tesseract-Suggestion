@@ -58,6 +58,12 @@ class Bot
             command.call(cmd);
         }
     }
+
+    async get_channel()
+    {
+        let channel = await this.discord.channels.fetch(this.config.suggestionChannel)
+        return channel;
+    }
 }
 
 module.exports.Bot = Bot;

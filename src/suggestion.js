@@ -31,26 +31,11 @@ class SuggestionCommand extends Command
 
         console.log('New suggestion by', cmd.msg.author.tag);
         console.log('Title :', info.title, 'Trello id :', card.shortUrl);
-        cmd.msg.channel.send(this.get_embed(info))
+        cmd.msg.channel.send(get_embed(info, 'BLUE', 'En attente', null))
             .then(sent => {
                 this.update_card(cmd, info, sent.id);
             })
             .catch(console.error);
-    }
-
-    get_embed(info)
-    {
-        let embed = new Discord.MessageEmbed();
-        embed.setTitle('Suggestion ajoutée')
-            .setColor('BLUE')
-            .setFooter('Proposé par ' + info.author);
-        embed.addField('Titre', info.title);
-        embed.addField('Description', info.desc);
-        embed.addField('État', 'En attente');
-        embed.addField('Trello id', info.shortLink);
-        embed.addField('Trello url', info.shortUrl);
-
-        return embed;
     }
 
     parse_suggestion(message)
@@ -106,6 +91,7 @@ class SuggestionCommand extends Command
         let str = "Auteur : " + cmd.msg.author.tag + '\n';
         str += "messageID : " + cmd.msg.id + '\n';
         str += "answerID : " + answerID + '\n';
+        str += "cardID : " + info.shortLink + '\n';
         str += "\n" + info.desc;
         let data = {
             desc: str
@@ -114,6 +100,23 @@ class SuggestionCommand extends Command
     }
 }
 
+function get_embed(info, color, state, reason)
+{
+    let embed = new Discord.MessageEmbed();
+    embed.setTitle(info.title)
+        .setColor(color)
+        .setFooter('Proposé par ' + info.author);
+    embed.addField('État', state);
+    if (reason != null)
+        embed.addField('Raison', reason);
+    embed.addField('Trello id', info.shortLink);
+    embed.addField('Trello url', info.shortUrl);
+    embed.setDescription(info.desc);
+
+    return embed;
+}
+
 module.exports.SuggestionCommand = SuggestionCommand;
+module.exports.get_embed = get_embed;
 
 let {Bot} = require('./bot');
