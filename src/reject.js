@@ -8,6 +8,7 @@ class RejectCommand extends Command
         this.name = 'reject';
         this.alias = ['reject', 'r'];
         this.description = 'Refuser une suggestion';
+        this.permission = 'Trello';
     }
 
     async call(cmd)

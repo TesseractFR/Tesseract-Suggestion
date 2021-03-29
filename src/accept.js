@@ -8,6 +8,7 @@ class AcceptCommand extends Command
         this.name = 'accept';
         this.alias = ['accept', 'a'];
         this.description = 'Accepter une suggestion';
+        this.permission = 'Trello';
     }
 
     async call(cmd)

@@ -51,10 +51,19 @@ class Bot
     {
         if (message.content.startsWith(this.config.prefix))
         {
+            console.log(message.author.tag, ":", message.content);
             let cmd = this.parse_command(message);
             let command = Command.commands.find(c => c.match(cmd.label));
             if (command == null)
+            {
+                message.reply("Commande non reconnu.");
                 return;
+            }
+            if (!command.hasPermission(message.member))
+            {
+                message.reply("Tu n'as pas la permission d'effecteur cette commande.");
+                return;
+            }
             command.call(cmd);
         }
     }

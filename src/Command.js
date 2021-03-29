@@ -7,10 +7,18 @@ class Command
     name;
     alias = [];
     description;
+    permission = null;
 
     match(label)
     {
         return this.alias.includes(label);
+    }
+
+    hasPermission(member)
+    {
+        if (this.permission == null)
+            return true;
+        return member.roles.cache.some(role => role.name == this.permission);
     }
 
     call()
