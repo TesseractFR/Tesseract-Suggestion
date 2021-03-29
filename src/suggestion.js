@@ -14,6 +14,7 @@ class SuggestionCommand extends Command
     async call(cmd)
     {
         let info = this.parse_suggestion(cmd.msg.content);
+        info.author = cmd.msg.author.tag;
         let card;
         try
         {
@@ -24,19 +25,32 @@ class SuggestionCommand extends Command
             cmd.msg.reply('`Unexpected error.`');
             return;
         }
+        info.shortLink = card.shortLink;
+        info.shortUrl = card.shortUrl;
 
-        let embed = new Discord.MessageEmbed();
-        embed.setTitle('Suggestion ajoutée')
-            .setColor('GREEN')
-            .setFooter('Proposé par ' + cmd.msg.author.tag);
-        embed.addField('Titre', info.title);
-        embed.addField('Description', info.desc);
-        embed.addField('Trello id', card.shortLink);
-        embed.addField('Trello url', card.shortUrl);
 
         console.log('New suggestion by', cmd.msg.author.tag);
         console.log('Title :', info.title, 'Trello id :', card.shortUrl);
-        cmd.msg.channel.send(embed).catch(console.error);
+        cmd.msg.channel.send(this.get_embed(info))
+            .then(sent => {
+                this.update_card(cmd, info, sent.id);
+            })
+            .catch(console.error);
+    }
+
+    get_embed(info)
+    {
+        let embed = new Discord.MessageEmbed();
+        embed.setTitle('Suggestion ajoutée')
+            .setColor('BLUE')
+            .setFooter('Proposé par ' + info.author);
+        embed.addField('Titre', info.title);
+        embed.addField('Description', info.desc);
+        embed.addField('État', 'En attente');
+        embed.addField('Trello id', info.shortLink);
+        embed.addField('Trello url', info.shortUrl);
+
+        return embed;
     }
 
     parse_suggestion(message)
@@ -85,6 +99,18 @@ class SuggestionCommand extends Command
                 reject(err);
             }
         })
+    }
+
+    update_card(cmd, info, answerID)
+    {
+        let str = "Auteur : " + cmd.msg.author.tag + '\n';
+        str += "messageID : " + cmd.msg.id + '\n';
+        str += "answerID : " + answerID + '\n';
+        str += "\n" + info.desc;
+        let data = {
+            desc: str
+        };
+        Bot.instance.trello.card.update(info.shortLink, data);
     }
 }
 
