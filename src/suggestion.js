@@ -8,12 +8,17 @@ class SuggestionCommand extends Command
         super();
         this.name = 'suggestion';
         this.alias = ['suggestion', 's', 'sugg'];
-        this.description = 'Faire une suggestion';
+        this.description = 'Faire une suggestion. `suggestion "Titre": "description"`';
     }
 
     async call(cmd)
     {
         let info = this.parse_suggestion(cmd.msg.content);
+        if (!info)
+        {
+            cmd.msg.reply('Usage: `' + Bot.instance.config.prefix + 'suggestion "Titre": "description"`');
+            return;
+        }
         info.author = cmd.msg.author.tag;
         let card;
         try
