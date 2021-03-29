@@ -9,6 +9,7 @@
   "author": "GabRayz",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "trello-node-api": "^0.0.9"
   }
 }

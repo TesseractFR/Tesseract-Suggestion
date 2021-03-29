@@ -13,7 +13,7 @@ function load_config(path)
     });
 }
 
-load_config('./config.json').then(config => {
+load_config('./config.json').then(async config => {
     new Bot(config);
     Command.registerCommands();
 });

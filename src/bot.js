@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const TrelloAPI = require('trello-node-api');
 
 class Bot
 {
@@ -8,12 +9,14 @@ class Bot
      * Discord bot instance
      */
     discord;
+    trello;
 
     constructor(config)
     {
         this.config = config;
         this.discord = new Discord.Client();
         this.discord.login(this.config.token);
+        this.get_trello();
 
         this.discord.on('ready', () => {
             console.log("Client up and ready.");
@@ -22,6 +25,14 @@ class Bot
         });
 
         Bot.instance = this;
+    }
+
+    get_trello()
+    {
+        this.trello = TrelloAPI(this.config.trello.key, this.config.trello.oauth);
+        this.trello.board.search(this.config.trello.board).then(resp => {
+            console.log("Connected to trello!");
+        }).catch(console.error);
     }
 
     parse_command(message)
