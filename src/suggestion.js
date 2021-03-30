@@ -54,10 +54,9 @@ class SuggestionCommand extends Command
         if (sep == -1)
             return false;
 
-        let parts = str.split(':');
         let res = {
-            title: parts[0],
-            desc: parts[1]
+            title: str.substring(0, sep),
+            desc: str.substring(sep + 1)
         };
         return res;
     }
